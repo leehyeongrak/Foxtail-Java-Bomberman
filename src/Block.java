@@ -3,9 +3,11 @@ import processing.core.PImage;
 
 abstract public class Block {
     PImage blockImage;
-    private int x, y;
-    public Block(PImage blockImage) {
+    int x, y;
+    public Block(PImage blockImage, int x, int y) {
         this.blockImage = blockImage;
+        this.x = x;
+        this.y = y;
     }
 
     public void setX(int x) {

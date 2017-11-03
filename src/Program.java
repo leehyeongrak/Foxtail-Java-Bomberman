@@ -10,15 +10,37 @@ public class Program extends PApplet{
         this.size(800, 600);
     }
 
+    int map[][] = {
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 1},
+            {1, 3, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 3, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 3, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 3, 1},
+            {1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    };
+
+
+
 //    PImage spriteStay;
 //    PImage[] spriteCharStay;
 
     PImage stoneImage;
     PImage spriteStoneImage;
 
-    private List<Stone> stones = new ArrayList<>();
-    private Stone stone;
+    PImage boxImage;
+    PImage spriteBoxImage;
 
+    private List<Block> stones = new ArrayList<>();
+    private List<Block> boxes = new ArrayList<>();
 
 
     @Override
@@ -26,8 +48,8 @@ public class Program extends PApplet{
         this.background(0);
         System.out.println("Setup");
 
-        stoneImage = this.loadImage("bomberman-block.png");
-        spriteStoneImage = stoneImage.get(0,120,40,40);
+
+
 
 
 //        spriteStay = this.loadImage("bomberman-stay.png");
@@ -41,14 +63,18 @@ public class Program extends PApplet{
 //        }
 
         stoneSetup();
-
+        boxSetup();
     }
 
 
     @Override
     public void draw() {
         background(0, 128, 0);
-        for (Stone e : stones) {
+        for (Block e : stones) {
+            e.draw(this);
+        }
+
+        for (Block e : boxes) {
             e.draw(this);
         }
     }
@@ -58,21 +84,32 @@ public class Program extends PApplet{
     }
 
     private void stoneSetup(){
-        for(int i = 0; i < 20; i++){
-            stones.add(new Stone(spriteStoneImage, 40*i, 0));
-            stones.add(new Stone(spriteStoneImage, 0, 40*i));
-            stones.add(new Stone(spriteStoneImage, 800-40, 40*i));
-            stones.add(new Stone(spriteStoneImage, 40*i, 600-40));
-        }
+        stoneImage = this.loadImage("bomberman-block.png");
+        spriteStoneImage = stoneImage.get(0,120,40,40);
 
-        for(int i = 1; i < 7; i ++){
-            for(int j = 1; j < 5; j ++){
-                stones.add(new Stone(spriteStoneImage, 40*2*j, 40*2*i));
-            }
-
-            for(int j = 9; j > 5; j --){
-                stones.add(new Stone(spriteStoneImage, 40*2*j - 40, 40*2*i));
+        for(int i = 0; i < 15; i ++){
+            for(int j = 0; j < 20; j++){
+                if (map[i][j] == 1){
+                    stones.add(new Stone(spriteStoneImage, j*40, i*40));
+                }
             }
         }
     }
+
+    private void boxSetup(){
+        boxImage = this.loadImage("bomberman-block.png");
+        spriteBoxImage = boxImage.get(0,0,40,40);
+
+        for(int i = 0; i < 15; i ++){
+            for(int j = 0; j < 20; j++){
+                if(map[i][j] == 0){
+                    int randomNumber = (int)(Math.random()*4);
+                    if(randomNumber == 0){
+                        boxes.add(new Box(spriteBoxImage, j*40, i*40));
+                    }
+                }
+            }
+        }
+    }
+
 }

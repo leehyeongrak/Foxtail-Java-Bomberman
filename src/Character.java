@@ -1,8 +1,10 @@
+import processing.core.PImage;
+
 public class Character {
     int x, y;
 
 
-    public Character() {
+    public Character(PImage characterImage) {
         super();
     }
 }
