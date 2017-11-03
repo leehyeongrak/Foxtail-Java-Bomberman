@@ -4,13 +4,15 @@ import processing.core.PImage;
 public class Character {
     int x, y;
     PImage characterImage[];
-    int speed;
+    PImage movingImage[];
+    int speed = 8;
     int power;
     int count;
 
 
-    public Character(PImage characterImage[], int x, int y) {
+    public Character(PImage characterImage[], PImage movingImage[], int x, int y) {
         this.characterImage = characterImage;
+        this.movingImage = movingImage;
         this.x = x;
         this.y = y;
     }
@@ -18,14 +20,15 @@ public class Character {
 
     int tick = 0;
     int direction = 0;
-    boolean isMoving;
+    boolean isMoving = false;
 
     public void draw(PApplet pApplet) {
         tick ++;
-//            pApplet.image(characterImage[tick / 10 % 5 + direction], x+8, y);
-//            System.out.println(tick / 10 % 5 + direction);
-            pApplet.image(characterImage[tick / 10 % 3 + direction], x+8, y);
-//            System.out.println(tick / 10 % 3 + direction);
+        if(isMoving){
+            pApplet.image(movingImage[tick / 10 % 5 + direction*5], x, y);
+        } else{
+            pApplet.image(characterImage[tick / 10 % 3 + direction*3], x, y);
+        }
     }
 
 }

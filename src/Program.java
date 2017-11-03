@@ -50,12 +50,12 @@ public class Program extends PApplet{
     @Override
     public void setup() {
         this.background(0);
-        System.out.println("Setup");
 
         stoneSetup();
         boxSetup();
         characterSetup();
-        movementSetup();
+
+        System.out.println("Setup");
     }
 
 
@@ -71,7 +71,6 @@ public class Program extends PApplet{
         }
 
         character1p.draw(this);
-        System.out.println(map[character1p.y/40][character1p.x/40]);
     }
 
     public static void main(String[] args) {
@@ -119,56 +118,51 @@ public class Program extends PApplet{
             }
         }
 
-        for(int i = 0; i < 15; i ++){
-            for(int j = 0; j < 20; j++){
-                int randomNumber = (int)(Math.random()*4) + 6;
-                if(map[i][j] == randomNumber){
-                    character1p = new Character(spriteCharacterStayImage, j*40, i*40);
-                }
-            }
-        }
-    }
-
-    private void movementSetup(){
         characterMoveImage = this.loadImage("bomberman-movement.png");
 
         spriteCharacterMoveImage = new PImage[20];
 
         for(int i = 0 ; i < 5; i++) {
             for (int j = 0; j <4; j++) {
-                spriteCharacterMoveImage[j * 5  + i] = characterStayImage.get(20 * i, 32 * j, 20, 32);
+                spriteCharacterMoveImage[j * 5  + i] = characterMoveImage.get(20 * i, 32 * j, 20, 32);
+            }
+        }
+
+        int randomNumber = (int)(Math.random()*4) + 6;
+        for(int i = 0; i < 15; i ++){
+            for(int j = 0; j < 20; j++){
+                if(map[i][j] == 6){
+                    character1p = new Character(spriteCharacterStayImage, spriteCharacterMoveImage, j*40, i*40);
+                }
             }
         }
     }
 
     @Override
     public void keyPressed() {
-//        character1p.characterImage = spriteCharacterMoveImage;
-//        if(isCollision()){
-//            return;
-//        }else{
+        character1p.isMoving = true;
             if(keyCode == 37){
-                character1p.direction = 9;
-                if (isCollision()){
-                    return;
-                } else{
-                    character1p.x -= 40;
-                }
-            }
-            if(keyCode == 38){
-                character1p.direction = 6;
-                if (isCollision()){
-                    return;
-                } else{
-                    character1p.y -= 40;
-                }
-            }
-            if(keyCode == 39){
                 character1p.direction = 3;
                 if (isCollision()){
                     return;
                 } else{
-                    character1p.x += 40;
+                    character1p.x -= character1p.speed;
+                }
+            }
+            if(keyCode == 38){
+                character1p.direction = 2;
+                if (isCollision()){
+                    return;
+                } else{
+                    character1p.y -= character1p.speed;
+                }
+            }
+            if(keyCode == 39){
+                character1p.direction = 1;
+                if (isCollision()){
+                    return;
+                } else{
+                    character1p.x += character1p.speed;
                 }
             }
             if(keyCode == 40){
@@ -176,7 +170,7 @@ public class Program extends PApplet{
                 if (isCollision()){
                     return;
                 } else{
-                    character1p.y += 40;
+                    character1p.y += character1p.speed;
                 }
             }
 //        }
@@ -185,32 +179,22 @@ public class Program extends PApplet{
 
     @Override
     public void keyReleased() {
-
+        character1p.isMoving = false;
     }
 
-//    private boolean isCollision() {
-//        if(map[character1p.y/40 - 1][character1p.x/40 - 1] == 1 ) {
-//            return true;
-//        } else{
-//            return false;
-//        }
-
-
-
-//    }
     private boolean isCollision() {
 
         switch (keyCode){
-            case 37 : if(map[character1p.y/40][character1p.x/40 - 1] == 1 || map[character1p.y/40][character1p.x/40 - 1] == 5) {
+            case 37 : if(map[character1p.y/40][(character1p.x - 4)/40] == 1|| map[(character1p.y + 31)/40][(character1p.x - 4)/40] == 1 ) {
                 return true;
             }break;
-            case 38 : if(map[character1p.y/40 - 1][character1p.x/40] == 1 || map[character1p.y/40 - 1][character1p.x/40] == 5) {
+            case 38 : if(map[(character1p.y - 4)/40][character1p.x/40] == 1 || map[(character1p.y - 4)/40][(character1p.x - 20)/40 + 1] == 1) {
                 return true;
             }break;
-            case 39 : if(map[character1p.y/40][character1p.x/40 + 1] == 1 || map[character1p.y/40][character1p.x/40 + 1] == 5 ) {
+            case 39 : if(map[character1p.y/40][(character1p.x + 20)/40] == 1 || map[(character1p.y + 31)/40][(character1p.x + 20)/40] == 1 ) {
                 return true;
             }break;
-            case 40 : if(map[character1p.y/40 + 1][character1p.x/40] == 1 || map[character1p.y/40 + 1][character1p.x/40] == 5) {
+            case 40 : if(map[((character1p.y + 32))/40][character1p.x/40] == 1 || map[((character1p.y + 32))/40][(character1p.x - 20)/40 + 1] ==1) {
                 return true;
             }break;
         }
