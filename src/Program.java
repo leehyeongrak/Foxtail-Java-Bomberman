@@ -71,6 +71,7 @@ public class Program extends PApplet{
         }
 
         character1p.draw(this);
+        System.out.println(map[character1p.y/40][character1p.x/40]);
     }
 
     public static void main(String[] args) {
@@ -100,6 +101,7 @@ public class Program extends PApplet{
                     int randomNumber = (int)(Math.random()*4);
                     if(randomNumber == 0){
                         boxes.add(new Box(spriteBoxImage, j*40, i*40));
+                        map[i][j] = 5;
                     }
                 }
             }
@@ -142,30 +144,76 @@ public class Program extends PApplet{
     @Override
     public void keyPressed() {
 //        character1p.characterImage = spriteCharacterMoveImage;
-        if(keyCode == 37){
-            character1p.direction = 9;
-//            character1p.isMoving = true;
-            character1p.x -= 5;
-//            System.out.println("left");
-        }
-        if(keyCode == 38){
-            character1p.direction = 6;
-            character1p.y -= 5;
-//            System.out.println("up");
-        }
-        if(keyCode == 39){
-            character1p.direction = 3;
-            character1p.x += 5;
-//            System.out.println("right");
-        }
-        if(keyCode == 40){
-            character1p.direction = 0;
-            character1p.y += 5;
-//            System.out.println("down");
-        }
+//        if(isCollision()){
+//            return;
+//        }else{
+            if(keyCode == 37){
+                character1p.direction = 9;
+                if (isCollision()){
+                    return;
+                } else{
+                    character1p.x -= 40;
+                }
+            }
+            if(keyCode == 38){
+                character1p.direction = 6;
+                if (isCollision()){
+                    return;
+                } else{
+                    character1p.y -= 40;
+                }
+            }
+            if(keyCode == 39){
+                character1p.direction = 3;
+                if (isCollision()){
+                    return;
+                } else{
+                    character1p.x += 40;
+                }
+            }
+            if(keyCode == 40){
+                character1p.direction = 0;
+                if (isCollision()){
+                    return;
+                } else{
+                    character1p.y += 40;
+                }
+            }
+//        }
+
     }
 
     @Override
     public void keyReleased() {
+
+    }
+
+//    private boolean isCollision() {
+//        if(map[character1p.y/40 - 1][character1p.x/40 - 1] == 1 ) {
+//            return true;
+//        } else{
+//            return false;
+//        }
+
+
+
+//    }
+    private boolean isCollision() {
+
+        switch (keyCode){
+            case 37 : if(map[character1p.y/40][character1p.x/40 - 1] == 1 || map[character1p.y/40][character1p.x/40 - 1] == 5) {
+                return true;
+            }break;
+            case 38 : if(map[character1p.y/40 - 1][character1p.x/40] == 1 || map[character1p.y/40 - 1][character1p.x/40] == 5) {
+                return true;
+            }break;
+            case 39 : if(map[character1p.y/40][character1p.x/40 + 1] == 1 || map[character1p.y/40][character1p.x/40 + 1] == 5 ) {
+                return true;
+            }break;
+            case 40 : if(map[character1p.y/40 + 1][character1p.x/40] == 1 || map[character1p.y/40 + 1][character1p.x/40] == 5) {
+                return true;
+            }break;
+        }
+        return false;
     }
 }
